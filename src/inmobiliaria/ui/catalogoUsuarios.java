@@ -83,7 +83,7 @@ public class catalogoUsuarios extends JFrame {
 		btnModificar.setBounds(540, 182, 98, 38);
 		contentPane.add(btnModificar);
 		
-		JButton btnEliminar = new JButton("Eliminar");
+		JButton btnEliminar = new JButton("Eliminar"); // Este es un comentario
 		btnEliminar.setBounds(540, 253, 98, 38);
 		contentPane.add(btnEliminar);
 

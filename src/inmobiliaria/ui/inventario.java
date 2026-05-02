@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JTextField;
@@ -55,7 +56,7 @@ public class inventario extends JFrame {
 		contentPane.add(lblInventario);
 		
 		txtBusqueda = new JTextField();
-		txtBusqueda.setBounds(34, 49, 406, 18);
+		txtBusqueda.setBounds(34, 49, 382, 18);
 		contentPane.add(txtBusqueda);
 		txtBusqueda.setColumns(10);
 		
@@ -63,7 +64,13 @@ public class inventario extends JFrame {
 		scrollPane.setBounds(34, 86, 602, 283);
 		contentPane.add(scrollPane);
 		
-		table = new JTable();
+		DefaultTableModel modelo = new DefaultTableModel();
+		
+		modelo.addColumn("Ubicacion");
+		modelo.addColumn("Dimensiones");
+		modelo.addColumn("Precio");
+		
+		table = new JTable(modelo);
 		scrollPane.setViewportView(table);
 		
 		JButton btnBusqueda = new JButton("Buscar");
@@ -72,7 +79,7 @@ public class inventario extends JFrame {
 		
 		JComboBox cmbBusqueda = new JComboBox();
 		cmbBusqueda.setModel(new DefaultComboBoxModel(new String[] {"Presupuesto", "Ubicacion", "Dimensiones"}));
-		cmbBusqueda.setBounds(450, 48, 92, 20);
+		cmbBusqueda.setBounds(426, 48, 116, 20);
 		contentPane.add(cmbBusqueda);
 
 	}

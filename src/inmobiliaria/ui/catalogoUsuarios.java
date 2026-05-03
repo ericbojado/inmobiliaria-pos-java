@@ -5,14 +5,18 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.DefaultComboBoxModel;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class catalogoUsuarios extends JFrame {
 
@@ -41,13 +45,15 @@ public class catalogoUsuarios extends JFrame {
 	 * Create the frame.
 	 */
 	public catalogoUsuarios() {
-		setTitle("Catalogo de usuarios");
+		setTitle("Catalogo de Usuarios");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 667, 440);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		
+		setLocationRelativeTo(null);
 		
 		JLabel lblCatalogoUsuarios = new JLabel("Catálogo de Usuarios");
 		lblCatalogoUsuarios.setFont(new Font("Tahoma", Font.PLAIN, 20));
@@ -72,18 +78,43 @@ public class catalogoUsuarios extends JFrame {
 		scrollPane.setBounds(23, 73, 485, 303);
 		contentPane.add(scrollPane);
 		
-		table = new JTable();
+		DefaultTableModel modelo = new DefaultTableModel();
+		
+		modelo.addColumn("Nombre");
+		modelo.addColumn("Correo");
+		modelo.addColumn("Rol");
+
+		table = new JTable(modelo);
 		scrollPane.setViewportView(table);
 		
+		
+		
 		JButton btnAgregar = new JButton("Agregar");
+		btnAgregar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				AgregarUsuario agregar = new AgregarUsuario();
+				agregar.setSize(350, 225);
+				agregar.setLocationRelativeTo(catalogoUsuarios.this);
+				agregar.setVisible(true);
+			}
+		});
 		btnAgregar.setBounds(540, 109, 98, 38);
 		contentPane.add(btnAgregar);
 		
 		JButton btnModificar = new JButton("Modificar");
+		btnModificar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ModificarUsuario modificar = new ModificarUsuario();
+				modificar.setSize(350, 225);
+				modificar.setLocationRelativeTo(catalogoUsuarios.this);
+				modificar.setVisible(true);
+				
+			}
+		});
 		btnModificar.setBounds(540, 182, 98, 38);
 		contentPane.add(btnModificar);
 		
-		JButton btnEliminar = new JButton("Eliminar");
+		JButton btnEliminar = new JButton("Eliminar"); // Este es un comentario
 		btnEliminar.setBounds(540, 253, 98, 38);
 		contentPane.add(btnEliminar);
 

@@ -69,6 +69,7 @@ public class inventario extends JFrame {
 		modelo.addColumn("Ubicacion");
 		modelo.addColumn("Dimensiones");
 		modelo.addColumn("Precio");
+		modelo.addColumn("Tipo");
 		
 		table = new JTable(modelo);
 		scrollPane.setViewportView(table);
@@ -78,7 +79,7 @@ public class inventario extends JFrame {
 		contentPane.add(btnBusqueda);
 		
 		JComboBox cmbBusqueda = new JComboBox();
-		cmbBusqueda.setModel(new DefaultComboBoxModel(new String[] {"Presupuesto", "Ubicacion", "Dimensiones"}));
+		cmbBusqueda.setModel(new DefaultComboBoxModel(new String[] {"Presupuesto", "Ubicacion", "Dimensiones", "Tipo"}));
 		cmbBusqueda.setBounds(426, 48, 116, 20);
 		contentPane.add(cmbBusqueda);
 

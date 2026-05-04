@@ -12,8 +12,16 @@ import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class AgregarUsuario extends JDialog {
+
+	private String nombre;
+	private String correo;
+	private String password;
+	private String rol;
+	private boolean guardar = false;
 
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
@@ -38,6 +46,7 @@ public class AgregarUsuario extends JDialog {
 	 * Create the dialog.
 	 */
 	public AgregarUsuario() {
+		
 		setTitle("Agregar Usuario");
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
@@ -91,6 +100,17 @@ public class AgregarUsuario extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton okButton = new JButton("OK");
+				okButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						nombre = txtNombreAgregar.getText();
+						correo = txtCorreoAgregar.getText();
+						password = txtContrasenaAgregar.getText();
+						rol = cmbRolAgregar.getSelectedItem().toString();
+						
+						guardar = true;
+						dispose();//Cierra jdialog
+					}
+				});
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
@@ -101,5 +121,26 @@ public class AgregarUsuario extends JDialog {
 				buttonPane.add(cancelButton);
 			}
 		}
+	}
+	
+	//Getters para pedir datos en jframe
+	public boolean guardadoCorrecto() {
+		return guardar;
+	}
+	
+	public String traerNombre() {
+		return nombre;
+	}
+	
+	public String traerCorreo() {
+		return correo;
+	}
+	
+	public String traerPassword() {
+		return password;
+	}
+	
+	public String traerRol() {
+		return rol;
 	}
 }

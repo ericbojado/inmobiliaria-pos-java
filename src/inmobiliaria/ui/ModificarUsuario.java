@@ -12,14 +12,22 @@ import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import java.awt.Font;
 import javax.swing.DefaultComboBoxModel;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class ModificarUsuario extends JDialog {
+	private String nombreModificado;
+	private String correoModificado;
+	private String passwordModificado;
+	private String rolModificado;
+	private Boolean guardarModificacion;
 
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtContrasenaModificar;
 	private JTextField txtCorreoModificar;
 	private JTextField txtNombreModificar;
+	private JComboBox<String> cmbRolModificar;
 
 	/**
 	 * Launch the application.
@@ -38,6 +46,7 @@ public class ModificarUsuario extends JDialog {
 	 * Create the dialog.
 	 */
 	public ModificarUsuario() {
+		
 		setTitle("Modificar Usuario");
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
@@ -50,8 +59,8 @@ public class ModificarUsuario extends JDialog {
 			contentPanel.add(lblRolModificar);
 		}
 		{
-			JComboBox cmbRolModificar = new JComboBox();
-			cmbRolModificar.setModel(new DefaultComboBoxModel(new String[] {"Administrador", "Vendedor"}));
+			JComboBox<String> cmbRolModificar = new JComboBox<>();
+			cmbRolModificar.setModel(new DefaultComboBoxModel<String>(new String[] {"Administrador", "Vendedor"}));
 			cmbRolModificar.setBounds(49, 114, 124, 20);
 			contentPanel.add(cmbRolModificar);
 		}
@@ -94,12 +103,30 @@ public class ModificarUsuario extends JDialog {
 			lblModificarUsuario.setBounds(10, 10, 149, 19);
 			contentPanel.add(lblModificarUsuario);
 		}
+		
+		txtNombreModificar.setText(catalogoUsuarios.nombreModificar());
+		txtCorreoModificar.setText(catalogoUsuarios.correoModificar());
+		txtContrasenaModificar.setText(catalogoUsuarios.passwordModificar());
+		cmbRolModificar.setSelectedItem(catalogoUsuarios.rolModificar());
+
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton okButton = new JButton("OK");
+				okButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						nombreModificado = txtNombreModificar.getText();
+						correoModificado = txtCorreoModificar.getText();
+						passwordModificado = txtContrasenaModificar.getText();
+						nombreModificado = cmbRolModificar.getSelectedItem().toString();//SIEMPRE PARSEA A STRING VALOR DE COMBOBOX!!!!!!!!!!!
+						
+						guardarModificacion = true;
+						dispose();
+						
+					}
+				});
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
@@ -110,6 +137,26 @@ public class ModificarUsuario extends JDialog {
 				buttonPane.add(cancelButton);
 			}
 		}
+	}
+	
+	public boolean guardadoCorrecto() {
+		return guardarModificacion;
+	}
+	
+	public String traerNombreModificado() {
+		return nombreModificado;
+	}
+	
+	public String traerCorreoModificado() {
+		return correoModificado;
+	}
+	
+	public String traerPasswordModificado() {
+		return passwordModificado;
+	}
+	
+	public String traerRolModificado() {
+		return rolModificado;
 	}
 
 }

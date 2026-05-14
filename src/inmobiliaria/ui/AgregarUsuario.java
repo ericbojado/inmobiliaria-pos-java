@@ -8,12 +8,22 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class AgregarUsuario extends JDialog {
+
+	private String nombre;
+	private String correo;
+	private String password;
+	private String rol;
+	private boolean guardar = false;
 
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
@@ -38,6 +48,7 @@ public class AgregarUsuario extends JDialog {
 	 * Create the dialog.
 	 */
 	public AgregarUsuario() {
+		
 		setTitle("Agregar Usuario");
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
@@ -91,15 +102,65 @@ public class AgregarUsuario extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton okButton = new JButton("OK");
+				okButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						
+						nombre = txtNombreAgregar.getText().trim();//trim corta espacios en blanco para futuras validaciones
+						correo = txtCorreoAgregar.getText().trim();
+						password = txtContrasenaAgregar.getText().trim();
+						rol = cmbRolAgregar.getSelectedItem().toString().trim();
+						
+						if(nombre.isEmpty() || correo.isEmpty() || password.isEmpty()) {//Si alguno de los campos esta vacio...
+							JOptionPane.showMessageDialog(null, "Asegurese de ingresar todos los datos solicitados.", "Error", JOptionPane.ERROR_MESSAGE);
+							return;//corta procedimiento
+						}
+						
+						if(!nombre.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+") || !correo.contains("@")) {
+							//!matches -> "si el nombre contiene valores diferentes a los siguientes caracteres..."
+							//!contains -> "si el correo no contiene el arroba..."
+							JOptionPane.showMessageDialog(null, "Asegurese de ingresar datos correctos.", "Error", JOptionPane.ERROR_MESSAGE);
+							return;//corta procedimiento
+						}
+
+						guardar = true;
+						dispose();//Cierra jdialog
+					}
+				});
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
 			}
 			{
 				JButton cancelButton = new JButton("Cancel");
+				cancelButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						dispose();
+					}
+				});
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
 			}
 		}
+	}
+	
+	//Getters para pedir datos en jframe
+	public boolean guardadoCorrecto() {
+		return guardar;
+	}
+	
+	public String traerNombre() {
+		return nombre;
+	}
+	
+	public String traerCorreo() {
+		return correo;
+	}
+	
+	public String traerPassword() {
+		return password;
+	}
+	
+	public String traerRol() {
+		return rol;
 	}
 }

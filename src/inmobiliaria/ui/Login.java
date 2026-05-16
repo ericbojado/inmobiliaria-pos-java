@@ -9,6 +9,13 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JButton;
 
+import inmobiliaria.util.ConexionDB;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
+
 public class Login extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -67,6 +74,48 @@ public class Login extends JFrame {
 		contentPane.add(lblNewLabel_1_1);
 		
 		JButton btnIngresar = new JButton("INGRESAR");
+		btnIngresar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			
+				String correo = txtUsuario.getText();
+				String password = txtContraseña.getText();
+
+				ConexionDB db = new ConexionDB();
+				db.conectar();
+
+				String sql = "SELECT nombre, rol FROM usuario WHERE correo = '" + correo + "' AND [password] = '" + password + "'";
+
+				DefaultTableModel datos = db.consulta(sql);
+
+				if (datos.getRowCount() > 0) {
+				    String nombre = datos.getValueAt(0, 0).toString();
+				    String rol = datos.getValueAt(0, 1).toString();
+
+				    JOptionPane.showMessageDialog(null, "Bienvenido " + nombre);
+
+				    if (rol.equals("Administrador")) {
+				        menu ventana = new menu();
+				        ventana.setVisible(true);
+				        dispose();
+				    } else if (rol.equals("Vendedor")) {
+				        Venta ventana = new Venta();
+				        ventana.setVisible(true);
+				        dispose();
+				    }
+
+				} else {
+					JOptionPane.showMessageDialog(null, "Correo o contraseña incorrectos", "Aviso", JOptionPane.WARNING_MESSAGE);
+				}
+
+				db.cerrar();
+			
+			
+			
+			
+			
+			
+			}
+		});
 		btnIngresar.setBounds(157, 164, 111, 46);
 		contentPane.add(btnIngresar);
 

@@ -46,9 +46,7 @@ public class menu extends JFrame {
 		JButton btnInventario = new JButton("Inventario");
 		btnInventario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// Mostrar JFrame de Catalogo de usuarios
-				
-		        inventario Ventana = new inventario();
+				inventario Ventana = new inventario();
 		        
 		        Ventana.setVisible(true);
 		        dispose();
@@ -60,9 +58,7 @@ public class menu extends JFrame {
 		JButton btnUsuarios = new JButton("Usuarios");
 		btnUsuarios.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// Mostrar JFrame de Catalogo de usuarios
-				
-		        catalogoUsuarios Ventana = new catalogoUsuarios();
+				catalogoUsuarios Ventana = new catalogoUsuarios();
 		        
 		        Ventana.setVisible(true);
 		        dispose();
@@ -72,15 +68,21 @@ public class menu extends JFrame {
 		contentPane.add(btnUsuarios);
 		
 		JButton btnClientes = new JButton("Clientes");
+		btnClientes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Catalogo_Cliente Ventana = new Catalogo_Cliente();
+		        
+		        Ventana.setVisible(true);
+		        dispose();
+			}
+		});
 		btnClientes.setBounds(323, 127, 144, 21);
 		contentPane.add(btnClientes);
 		
 		JButton btnVenta = new JButton("Venta");
 		btnVenta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// Mostrar JFrame de Catalogo de usuarios
-				
-		        Venta Ventana = new Venta();
+				Venta Ventana = new Venta();
 		        
 		        Ventana.setVisible(true);
 		        dispose();
@@ -90,6 +92,14 @@ public class menu extends JFrame {
 		contentPane.add(btnVenta);
 		
 		JButton btnHistorialVentas = new JButton("Historial de Ventas");
+		btnHistorialVentas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				/*Ventas Ventana = new Ventas();
+		        
+		        Ventana.setVisible(true);
+		        dispose();*/
+			}
+		});
 		btnHistorialVentas.setBounds(323, 193, 144, 21);
 		contentPane.add(btnHistorialVentas);
 

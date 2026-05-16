@@ -6,7 +6,10 @@
 	import javax.swing.JPanel;
 	import javax.swing.border.EmptyBorder;
 	import javax.swing.table.DefaultTableModel;
-	import javax.swing.JLabel;
+
+import inmobiliaria.util.ConexionDB;
+
+import javax.swing.JLabel;
 	import javax.swing.JOptionPane;
 	
 	import java.awt.Font;

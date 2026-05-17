@@ -9,6 +9,7 @@ import java.sql.ResultSetMetaData;
 
 public class ConexionDB {
 
+	ConexionDB base = new ConexionDB();
     private String rutaDB = "src/inmobiliaria/bd/Inmobiliaria_BD.accdb";
     private String url = "jdbc:ucanaccess://" + rutaDB;
     private Connection conexion = null;

@@ -59,7 +59,7 @@ public class ModificarUsuario extends JDialog {
 			contentPanel.add(lblRolModificar);
 		}
 		{
-			JComboBox<String> cmbRolModificar = new JComboBox<>();
+			cmbRolModificar = new JComboBox<String>();
 			cmbRolModificar.setModel(new DefaultComboBoxModel<String>(new String[] {"Administrador", "Vendedor"}));
 			cmbRolModificar.setBounds(49, 114, 124, 20);
 			contentPanel.add(cmbRolModificar);
@@ -120,7 +120,7 @@ public class ModificarUsuario extends JDialog {
 						nombreModificado = txtNombreModificar.getText();
 						correoModificado = txtCorreoModificar.getText();
 						passwordModificado = txtContrasenaModificar.getText();
-						nombreModificado = cmbRolModificar.getSelectedItem().toString();//SIEMPRE PARSEA A STRING VALOR DE COMBOBOX!!!!!!!!!!!
+						rolModificado = cmbRolModificar.getSelectedItem().toString();//SIEMPRE PARSEA A STRING VALOR DE COMBOBOX!!!!!!!!!!!
 						
 						guardarModificacion = true;
 						dispose();
@@ -133,6 +133,11 @@ public class ModificarUsuario extends JDialog {
 			}
 			{
 				JButton cancelButton = new JButton("Cancel");
+				cancelButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						dispose();
+					}
+				});
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
 			}

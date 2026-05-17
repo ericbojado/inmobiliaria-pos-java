@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.JComboBox;
@@ -20,11 +21,11 @@ public class ModificarUsuario extends JDialog {
 	private String correoModificado;
 	private String passwordModificado;
 	private String rolModificado;
-	private Boolean guardarModificacion;
+	private boolean guardarModificacion = false;
 
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
-	private JTextField txtContrasenaModificar;
+	private JPasswordField txtContrasenaModificar;
 	private JTextField txtCorreoModificar;
 	private JTextField txtNombreModificar;
 	private JComboBox<String> cmbRolModificar;
@@ -65,7 +66,7 @@ public class ModificarUsuario extends JDialog {
 			contentPanel.add(cmbRolModificar);
 		}
 		{
-			txtContrasenaModificar = new JTextField();
+			txtContrasenaModificar = new JPasswordField();
 			txtContrasenaModificar.setColumns(10);
 			txtContrasenaModificar.setBounds(104, 89, 216, 18);
 			contentPanel.add(txtContrasenaModificar);
@@ -119,7 +120,7 @@ public class ModificarUsuario extends JDialog {
 					public void actionPerformed(ActionEvent e) {
 						nombreModificado = txtNombreModificar.getText();
 						correoModificado = txtCorreoModificar.getText();
-						passwordModificado = txtContrasenaModificar.getText();
+						passwordModificado = new String(txtContrasenaModificar.getPassword()).trim();
 						rolModificado = cmbRolModificar.getSelectedItem().toString();//SIEMPRE PARSEA A STRING VALOR DE COMBOBOX!!!!!!!!!!!
 						
 						guardarModificacion = true;

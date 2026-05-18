@@ -14,10 +14,17 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JEditorPane;
 import java.awt.Font;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 import javax.swing.JTextArea;
 import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextPane;
 
@@ -32,6 +39,13 @@ public class Catalogo_Cliente extends JFrame {
 	private JTextField textField_2;
 	private JTextField textField_3;
 
+	//Datos_para_la_tabla
+	DefaultTableModel modelo = new DefaultTableModel();
+	
+	Connection Conexion = null;
+	Statement Sentenciasql = null;
+	ResultSet Rs = null;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -52,8 +66,6 @@ public class Catalogo_Cliente extends JFrame {
 	 * Create the frame.
 	 */
 	
-	//Datos_para_la_tabla
-	DefaultTableModel modelo = new DefaultTableModel();
 	
 	public Catalogo_Cliente() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -154,6 +166,33 @@ public class Catalogo_Cliente extends JFrame {
 		JLabel lblNewLabel_6 = new JLabel("Dirección:");
 		lblNewLabel_6.setBounds(185, 331, 71, 14);
 		contentPane.add(lblNewLabel_6);
+		
+		MostrarInformacion();
 
+	}
+	private void MostrarInformacion() 
+	{
+		//Procedimientos para mostrar la informacion de la BD en la tabla
+		String Valores[] = new String[4];
+		//Variables
+		
+		try {
+		Conexion = DriverManager.getConnection("jdbc:ucanaccess://bd//inmobiliaria_BD.accdb");
+		Sentenciasql = Conexion.createStatement();
+		Rs = Sentenciasql.executeQuery("SELECT nombre, apellido, telefono, direccion From clientes");
+		
+		while(Rs.next()){
+			//Recuperar la informacion en un arreglo
+			Valores[0] = Rs.getString("Nombre");
+			Valores[1] = Rs.getString("Apellido");
+			Valores[2] = Rs.getString("Telefono");
+			Valores[3] = Rs.getString("Direccion");
+			
+			modelo.addRow(Valores);
+		}
+		Conexion.close();
+		}catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "Ocurrio el error: " + e.toString());
+		}
 	}
 }

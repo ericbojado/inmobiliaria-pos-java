@@ -100,7 +100,7 @@ public class Venta extends JFrame {
 		btnCerrar.addActionListener(e -> dispose());
 		contentPane.add(btnCerrar);
 		
-		JComboBox cmbBusqueda = new JComboBox();
+		cmbBusqueda = new JComboBox();
 		cmbBusqueda.setModel(new DefaultComboBoxModel(new String[] {"Presupuesto", "Dimesiones", "Ubicación"}));
 		cmbBusqueda.setBounds(381, 82, 151, 22);
 		contentPane.add(cmbBusqueda);

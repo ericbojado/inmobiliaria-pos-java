@@ -6,6 +6,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+
+import inmobiliaria.util.ConexionDB;
+
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -27,6 +30,11 @@ import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextPane;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.border.LineBorder;
+import java.awt.Color;
+import javax.swing.border.TitledBorder;
 
 public class Catalogo_Cliente extends JFrame {
 
@@ -34,13 +42,11 @@ public class Catalogo_Cliente extends JFrame {
 	private JPanel contentPane;
 	private JTextField texCliente;
 	private JTable table;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
 
 	//Datos_para_la_tabla
 	DefaultTableModel modelo = new DefaultTableModel();
+	String sentencia = "";
+	ConexionDB conexion = new ConexionDB();
 	
 	Connection Conexion = null;
 	Statement Sentenciasql = null;
@@ -102,10 +108,11 @@ public class Catalogo_Cliente extends JFrame {
 		contentPane.add(BoxCategoria);
 		
 		JScrollPane scrLista = new JScrollPane();
-		scrLista.setBounds(28, 84, 352, 164);
+		scrLista.setBounds(10, 84, 475, 164);
 		contentPane.add(scrLista);
 		
 		//Columnas
+		        modelo.addColumn("id");
 				modelo.addColumn("Nombre");
 				modelo.addColumn("Apellido");
 				modelo.addColumn("Teléfono");
@@ -115,57 +122,66 @@ public class Catalogo_Cliente extends JFrame {
 		table = new JTable(modelo);
 		scrLista.setViewportView(table);
 		
-		JButton btnModificar = new JButton("Modificar");
-		btnModificar.setBounds(396, 129, 89, 23);
-		contentPane.add(btnModificar);
-		
-		JButton btnAgregar = new JButton("Agregar");
-		btnAgregar.setBounds(396, 315, 89, 23);
-		contentPane.add(btnAgregar);
-		
-		JButton btnEliminar = new JButton("Eliminar");
-		btnEliminar.setBounds(396, 200, 89, 23);
-		contentPane.add(btnEliminar);
-		
 		JButton btnRegresar = new JButton("Regresar");
 		btnRegresar.setBounds(383, 394, 102, 23);
 		contentPane.add(btnRegresar);
 		
-		textField = new JTextField();
-		textField.setBounds(89, 285, 86, 20);
-		contentPane.add(textField);
-		textField.setColumns(10);
+		JPanel panel = new JPanel();
+		panel.setBorder(new TitledBorder(null, "Acciones", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel.setBounds(10, 284, 475, 73);
+		contentPane.add(panel);
+		panel.setLayout(null);
 		
-		textField_1 = new JTextField();
-		textField_1.setBounds(89, 328, 86, 20);
-		contentPane.add(textField_1);
-		textField_1.setColumns(10);
+		JButton btnAgregar = new JButton("Agregar");
+		btnAgregar.setBounds(20, 26, 115, 23);
+		panel.add(btnAgregar);
 		
-		textField_2 = new JTextField();
-		textField_2.setBounds(274, 285, 86, 20);
-		contentPane.add(textField_2);
-		textField_2.setColumns(10);
+		JButton btnModificar = new JButton("Modificar");
+		btnModificar.setBounds(179, 26, 115, 23);
+		panel.add(btnModificar);
 		
-		textField_3 = new JTextField();
-		textField_3.setBounds(274, 328, 86, 20);
-		contentPane.add(textField_3);
-		textField_3.setColumns(10);
-		
-		JLabel lblNewLabel_3 = new JLabel("Nombre:");
-		lblNewLabel_3.setBounds(10, 288, 69, 14);
-		contentPane.add(lblNewLabel_3);
-		
-		JLabel lblNewLabel_4 = new JLabel("Apellido:");
-		lblNewLabel_4.setBounds(10, 331, 55, 14);
-		contentPane.add(lblNewLabel_4);
-		
-		JLabel lblNewLabel_5 = new JLabel("Telefono:");
-		lblNewLabel_5.setBounds(184, 288, 64, 14);
-		contentPane.add(lblNewLabel_5);
-		
-		JLabel lblNewLabel_6 = new JLabel("Dirección:");
-		lblNewLabel_6.setBounds(185, 331, 71, 14);
-		contentPane.add(lblNewLabel_6);
+		JButton btnEliminar = new JButton("Eliminar");
+		btnEliminar.setBounds(339, 26, 115, 23);
+		panel.add(btnEliminar);
+		btnAgregar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Agregar_Clin AgregarC = new Agregar_Clin();
+				AgregarC.setSize(350, 330);
+				AgregarC.setLocationRelativeTo(Catalogo_Cliente.this);
+				AgregarC.setModal(true);
+				AgregarC.setVisible(true);
+				String nombre, apellido, telefono, direccion;
+				
+				if(AgregarC.guardadoCorrecto()) {//Se confirma que se presiono OK y no algun otro boton en el jdialog
+					nombre = AgregarC.traerNombre();//Trae todos los datos ingresados en el jdialog
+					apellido = AgregarC.traerApellido();
+					telefono = AgregarC.traerTelefono();
+					direccion = AgregarC.traerDireccion();
+					
+					sentencia = "INSERT INTO cliente (nombre, apellido, telefono, direccion) VALUES ('"+ nombre +"', '"+ apellido +"', '"+ telefono +"', '"+ direccion +"')";
+					
+					try{
+						Connection con = conexion.conectar();
+						Sentenciasql = con.createStatement();
+						int filas = Sentenciasql.executeUpdate(sentencia);
+						
+						if(filas >= 1) {
+							JOptionPane.showMessageDialog(null, "Usuario agregado con exito.", "Exito", JOptionPane.INFORMATION_MESSAGE);							
+						}else {
+							JOptionPane.showMessageDialog(null, "Error al almacenar el usuario ", "Error", JOptionPane.ERROR_MESSAGE);
+						}
+						
+						modelo.setRowCount(0);
+						MostrarInformacion();
+						conexion.cerrar();
+						
+					}catch (SQLException ex){
+						JOptionPane.showMessageDialog(null, "Error: " + ex, "Error", JOptionPane.ERROR_MESSAGE);
+					}
+					
+				}
+			}
+		});
 		
 		MostrarInformacion();
 
@@ -173,24 +189,25 @@ public class Catalogo_Cliente extends JFrame {
 	private void MostrarInformacion() 
 	{
 		//Procedimientos para mostrar la informacion de la BD en la tabla
-		String Valores[] = new String[4];
+		String Valores[] = new String[5];
 		//Variables
-		
+		sentencia = "SELECT * FROM cliente";
 		try {
-		Conexion = DriverManager.getConnection("jdbc:ucanaccess://bd//inmobiliaria_BD.accdb");
-		Sentenciasql = Conexion.createStatement();
-		Rs = Sentenciasql.executeQuery("SELECT nombre, apellido, telefono, direccion From clientes");
+		Connection con = conexion.conectar();
+		Sentenciasql = con.createStatement();
+		Rs = Sentenciasql.executeQuery(sentencia);
 		
 		while(Rs.next()){
 			//Recuperar la informacion en un arreglo
-			Valores[0] = Rs.getString("Nombre");
-			Valores[1] = Rs.getString("Apellido");
-			Valores[2] = Rs.getString("Telefono");
-			Valores[3] = Rs.getString("Direccion");
+			Valores[0] = Rs.getString("id");
+			Valores[1] = Rs.getString("Nombre");
+			Valores[2] = Rs.getString("Apellido");
+			Valores[3] = Rs.getString("Telefono");
+			Valores[4] = Rs.getString("Direccion");
 			
 			modelo.addRow(Valores);
 		}
-		Conexion.close();
+		conexion.cerrar();
 		}catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, "Ocurrio el error: " + e.toString());
 		}

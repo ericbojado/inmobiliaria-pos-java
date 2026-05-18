@@ -31,3 +31,8 @@ bin/
 
 # Otros archivos basura
 .metadata/
+
+# EXCEPCIÓN: No ignorar los que están en la carpeta lib
+!Driver/*.jar
+
+*.accdb

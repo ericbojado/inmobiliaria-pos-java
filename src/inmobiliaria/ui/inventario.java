@@ -62,7 +62,7 @@ public class inventario extends JFrame {
 	public inventario() {
 		setTitle("Inventario");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 707, 453);
+		setBounds(100, 100, 831, 501);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -161,6 +161,30 @@ public class inventario extends JFrame {
 		});
 		btnBusqueda.setBounds(552, 48, 84, 20);
 		contentPane.add(btnBusqueda);
+		
+		JButton btnModificar = new JButton("Modificar");
+		btnModificar.setBounds(687, 175, 98, 38);
+		contentPane.add(btnModificar);
+		
+		JButton btnAgregar = new JButton("Agregar");
+		btnAgregar.setBounds(687, 102, 98, 38);
+		contentPane.add(btnAgregar);
+		
+		JButton btnEliminar = new JButton("Eliminar");
+		btnEliminar.setBounds(687, 246, 98, 38);
+		contentPane.add(btnEliminar);
+		
+		JButton btnRegresar = new JButton("Regresar");
+		btnRegresar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				menu Ventana = new menu();
+		        
+		        Ventana.setVisible(true);
+		        dispose();
+			}
+		});
+		btnRegresar.setBounds(683, 346, 102, 23);
+		contentPane.add(btnRegresar);
 	}
 	
 	public void cargarDatos() {
@@ -191,6 +215,4 @@ public class inventario extends JFrame {
 		}
 		
 	}
-	
-	
 }

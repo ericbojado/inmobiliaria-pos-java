@@ -27,6 +27,8 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTextArea;
 
 import inmobiliaria.util.ConexionDB;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class Venta extends JFrame {
 
@@ -46,6 +48,9 @@ public class Venta extends JFrame {
 	/**
 	 * Launch the application.
 	 */
+    private Statement query = null;
+	private ResultSet Rs = null;
+
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -131,6 +136,16 @@ public class Venta extends JFrame {
 		txtBusqueda.setBounds(20, 83, 241, 20);
 		contentPane.add(txtBusqueda);
 		txtBusqueda.setColumns(10);
+		
+		JButton btnLimpiar = new JButton("Limpiar");
+		btnLimpiar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				cargarTodasPropiedades();
+			}
+		});
+		btnLimpiar.setBounds(542, 36, 100, 25);
+		contentPane.add(btnLimpiar);
         
         cargarTodasPropiedades();
 	}
@@ -228,6 +243,34 @@ public class Venta extends JFrame {
             propiedadesId[i] = resultado.getValueAt(i, 0).toString();
         }
     }
+	
+	public void cargarDatos() {
+		modeloTabla.setRowCount(0);
+		String sentencia = "SELECT * FROM propiedades";
+		
+		
+		String[] datos = new String[5];
+		
+		try{
+			Connection con = conexion.conectar();
+			query = con.createStatement();
+			Rs = query.executeQuery(sentencia);
+			
+			while(Rs.next()){
+				datos[0] = Rs.getString(1);
+				datos[1] = Rs.getString(2);
+				datos[2] = Rs.getString(3);
+				datos[3] = Rs.getString(4);
+				datos[4] = Rs.getString(5);
+				modeloTabla.addRow(datos);
+			}
+			
+			conexion.cerrar();
+		}catch (SQLException ex){
+			JOptionPane.showMessageDialog(null, "Error: " + ex, "Error", JOptionPane.ERROR_MESSAGE);
+		}
+		
+	}
     
 	private void abrirDialogoVenta() {
 		int selectedRow = T_info.getSelectedRow();
@@ -353,18 +396,18 @@ public class Venta extends JFrame {
                 conexion.conectar();
                 
                 // 1. Insertar cliente
-                String sqlCliente = "INSERT INTO clientes (nombre, apellido, telefono, direccion) VALUES ('" +
+                String sqlCliente = "INSERT INTO cliente (nombre, apellido, telefono, direccion) VALUES ('" +
                                     nombre + "', '" + apellido + "', '" + telefono + "', '" + ubicacion + "')";
                 conexion.ejecutarSentencia(sqlCliente);
                 
                 // 2. Obtener ID del cliente
-                String sqlGetCliente = "SELECT MAX(id) as id FROM clientes";
+                String sqlGetCliente = "SELECT MAX(id) as id FROM cliente";
                 var clienteResult = conexion.consulta(sqlGetCliente);
                 int idCliente = Integer.parseInt(clienteResult.getValueAt(0, 0).toString());
                 
                 // 3. Insertar venta
                 Timestamp fecha = new Timestamp(System.currentTimeMillis());
-                String sqlVenta = "INSERT INTO ventas (precio_final, fecha, id_cliente, id_propiedad, id_usuario) VALUES (" +
+                String sqlVenta = "INSERT INTO venta (precio_final, fecha, id_cliente, id_propiedad, id_usuario) VALUES (" +
                                   precio + ", #" + fecha + "#, " + idCliente + ", " + idPropiedad + ", 1)";
                 conexion.ejecutarSentencia(sqlVenta);
                 

@@ -61,19 +61,19 @@ public class menu extends JFrame {
 		JButton btnUsuarios = new JButton("Usuarios");
 		btnUsuarios.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				catalogoUsuarios Ventana = new catalogoUsuarios();
+				CatalogoUsuarios Ventana = new CatalogoUsuarios();
 		        
 		        Ventana.setVisible(true);
 		        dispose();
 			}
 		});
-		btnUsuarios.setBounds(323, 191, 144, 21);
+		btnUsuarios.setBounds(323, 217, 144, 21);
 		contentPane.add(btnUsuarios);
 		
 		JButton btnClientes = new JButton("Clientes");
 		btnClientes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Catalogo_Cliente Ventana = new Catalogo_Cliente();
+				CatalogoCliente Ventana = new CatalogoCliente();
 		        
 		        Ventana.setVisible(true);
 		        dispose();
@@ -103,11 +103,11 @@ public class menu extends JFrame {
 		        dispose();*/
 			}
 		});
-		btnHistorialVentas.setBounds(323, 159, 144, 21);
+		btnHistorialVentas.setBounds(323, 186, 144, 21);
 		contentPane.add(btnHistorialVentas);
 		
-		JButton btnNewButton = new JButton("Cerrar Sesión");
-		btnNewButton.addActionListener(new ActionListener() {
+		JButton btnCerrarSesion = new JButton("Cerrar Sesión");
+		btnCerrarSesion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//Limpiamos la variable  del rol
 		        Login.RolUsuario = null;
@@ -118,14 +118,26 @@ public class menu extends JFrame {
 		        dispose();
 			}
 		});
-		btnNewButton.setBounds(23, 268, 144, 23);
-		contentPane.add(btnNewButton);
+		btnCerrarSesion.setBounds(23, 268, 144, 23);
+		contentPane.add(btnCerrarSesion);
 		
 		JLabel lblNewLabel = new JLabel("INMOBILIARIA");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblNewLabel.setBounds(32, 32, 118, 14);
 		contentPane.add(lblNewLabel);
+		
+		JButton btnPropiedades = new JButton("Gestión Propiedades");
+		btnPropiedades.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				CapturaPropiedades Ventana = new CapturaPropiedades();
+		        
+		        Ventana.setVisible(true);
+		        dispose();
+			}
+		});
+		btnPropiedades.setBounds(323, 158, 144, 21);
+		contentPane.add(btnPropiedades);
 
 		//Control de permisos dependiendo del Rol
 		if (Login.RolUsuario.equals("Vendedor")) {

@@ -23,14 +23,12 @@ public class ModificarCliente extends JDialog {
 	private JTextField txtApellido;
 	private JTextField txtTelefono;
 	private JTextField txtDireccion;
-
-	// Variables locales para validar y empaquetar los datos modificados
+	
 	private String nombreModificado;
 	private String apellidoModificado;
 	private String telefonoModificado;
 	private String direccionModificado;
 	
-	// Bandera de control
 	private boolean guardarModificacion = false;
 
 	/**

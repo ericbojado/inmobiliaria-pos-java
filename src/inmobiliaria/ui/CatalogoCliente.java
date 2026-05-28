@@ -117,6 +117,7 @@ public class CatalogoCliente extends JFrame {
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				AgregarCliente ventana = new AgregarCliente();
+				ventana.setModal(true);
 				ventana.setVisible(true);
 				
 				if(ventana.guardadoCorrecto()) {
@@ -147,7 +148,7 @@ public class CatalogoCliente extends JFrame {
 				int filaSeleccionada = table.getSelectedRow();
 
 				if (filaSeleccionada >= 0) {
-				    //Guardamos los datos de la JTable en las variables estáticas globales
+				    //Guardamos los datos de la Tabla
 				    idModificar = table.getModel().getValueAt(filaSeleccionada, 0).toString();
 				    nombreModificar = table.getModel().getValueAt(filaSeleccionada, 1).toString();
 				    apellidoModificar = table.getModel().getValueAt(filaSeleccionada, 2).toString();
@@ -155,6 +156,7 @@ public class CatalogoCliente extends JFrame {
 				    direccionModificar = table.getModel().getValueAt(filaSeleccionada, 4).toString();
 
 				    ModificarCliente ventanaModificar = new ModificarCliente();
+				    ventanaModificar.setModal(true);
 				    ventanaModificar.setVisible(true);
 				    
 				    if (ventanaModificar.guardadoCorrecto()) {
@@ -221,6 +223,13 @@ public class CatalogoCliente extends JFrame {
 		});
 		btnRegresar.setBounds(585, 397, 115, 23);
 		contentPane.add(btnRegresar);
+		
+		//Validación, si es vendedor no puede Ag, Md, o El
+		if (Login.RolUsuario.equals("Vendedor")) {
+			btnAgregar.setVisible(false);
+			btnEliminar.setVisible(false);
+			btnModificar.setVisible(false);
+		}
 	}
 
 	//Método para cargar los datos de la tabla

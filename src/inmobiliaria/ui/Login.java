@@ -25,6 +25,7 @@ public class Login extends JFrame {
 	private JTextField txtUsuario;
 	private JPasswordField txtContrasena;
 	public static String RolUsuario;
+	public static int IdUsuario;
 
 	/**
 	 * Launch the application.
@@ -88,13 +89,14 @@ public class Login extends JFrame {
 				ConexionDB db = new ConexionDB();
 				db.conectar();
 
-				String sql = "SELECT nombre, rol FROM usuario WHERE correo = '" + correo + "' AND [password] = '" + password + "'";
+				String sql = "SELECT id, nombre, rol FROM usuario WHERE correo = '" + correo + "' AND [password] = '" + password + "'";
 
 				DefaultTableModel datos = db.consulta(sql);
 
 				if (datos.getRowCount() > 0) {
-					String nombre = datos.getValueAt(0, 0).toString();
-					RolUsuario = datos.getValueAt(0, 1).toString();
+					IdUsuario = (int) datos.getValueAt(0, 0);
+					String nombre = datos.getValueAt(0, 1).toString();
+					RolUsuario = datos.getValueAt(0, 2).toString();
 
 					JOptionPane.showMessageDialog(null, "Bienvenido " + nombre);
 					

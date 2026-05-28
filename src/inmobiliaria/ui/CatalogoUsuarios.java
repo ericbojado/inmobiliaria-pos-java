@@ -1,4 +1,4 @@
-	package inmobiliaria.ui;
+package inmobiliaria.ui;
 
 import java.awt.EventQueue;
 import javax.swing.JFrame;
@@ -105,8 +105,6 @@ public class CatalogoUsuarios extends JFrame {
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				AgregarUsuario agregar = new AgregarUsuario();
-				agregar.setSize(350, 225);
-				agregar.setLocationRelativeTo(CatalogoUsuarios.this);
 				agregar.setModal(true);
 				agregar.setVisible(true);
 				
@@ -144,8 +142,6 @@ public class CatalogoUsuarios extends JFrame {
 					rolModificar = table.getModel().getValueAt(index, 4).toString();
 
 					ModificarUsuario modificar = new ModificarUsuario();
-					modificar.setSize(350, 225);
-					modificar.setLocationRelativeTo(CatalogoUsuarios.this);
 					modificar.setModal(true);
 					modificar.setVisible(true);
 					

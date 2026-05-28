@@ -49,7 +49,7 @@ public class menu extends JFrame {
 		JButton btnInventario = new JButton("Inventario");
 		btnInventario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				inventario Ventana = new inventario();
+				Inventario Ventana = new Inventario();
 		        
 		        Ventana.setVisible(true);
 		        dispose();
@@ -67,7 +67,7 @@ public class menu extends JFrame {
 		        dispose();
 			}
 		});
-		btnUsuarios.setBounds(323, 217, 144, 21);
+		btnUsuarios.setBounds(323, 195, 144, 21);
 		contentPane.add(btnUsuarios);
 		
 		JButton btnClientes = new JButton("Clientes");
@@ -103,7 +103,7 @@ public class menu extends JFrame {
 		        dispose();*/
 			}
 		});
-		btnHistorialVentas.setBounds(323, 186, 144, 21);
+		btnHistorialVentas.setBounds(323, 160, 144, 21);
 		contentPane.add(btnHistorialVentas);
 		
 		JButton btnCerrarSesion = new JButton("Cerrar Sesión");
@@ -126,18 +126,6 @@ public class menu extends JFrame {
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblNewLabel.setBounds(32, 32, 118, 14);
 		contentPane.add(lblNewLabel);
-		
-		JButton btnPropiedades = new JButton("Gestión Propiedades");
-		btnPropiedades.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				CapturaPropiedades Ventana = new CapturaPropiedades();
-		        
-		        Ventana.setVisible(true);
-		        dispose();
-			}
-		});
-		btnPropiedades.setBounds(323, 158, 144, 21);
-		contentPane.add(btnPropiedades);
 
 		//Control de permisos dependiendo del Rol
 		if (Login.RolUsuario.equals("Vendedor")) {

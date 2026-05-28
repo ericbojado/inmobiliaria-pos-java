@@ -3,20 +3,13 @@ package inmobiliaria.ui;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Timestamp;
-
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JComboBox;
@@ -34,22 +27,22 @@ public class Venta extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTable T_info;
+	private JTable tabla;
 	private JTextField txtBusqueda;
-	private JComboBox<String> cmbBusqueda;
-	private JButton btnBuscar, btnRecibo, btnCerrar;
-	private DefaultTableModel modeloTabla;
-    private ConexionDB conexion = new ConexionDB();;
-    private String propiedadSeleccionadaId;
-    private String propiedadSeleccionadaUbicacion;
-    private String propiedadSeleccionadaPrecio;
-    private String propiedadSeleccionadaDimension;
+	private JComboBox cmbBusqueda;
+	private JButton btnBuscar, btnRecibo, btnRegresar;
+	
+	public static int idUsuario = Login.IdUsuario;
+	private ConexionDB conexion = new ConexionDB();
 
 	/**
 	 * Launch the application.
 	 */
+<<<<<<< HEAD
     private Statement query = null;
 	private ResultSet Rs = null;
+=======
+>>>>>>> 72672565077a379555435bd0cd542d62b2d4eb0a
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -68,22 +61,22 @@ public class Venta extends JFrame {
 	 * Create the frame.
 	 */
 	public Venta() {
-		
-		setTitle("Inmobiliaria - Área de Ventas");
+		setTitle("Módulo de Ventas e Inmuebles Disponibles");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		// Se ajustó el tamaño para que quepan todos los paneles cómodamente
-		setBounds(100, 100, 700, 600);
+		setBounds(100, 100, 830, 490);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		setLocationRelativeTo(null);
 
-		// --- ENCABEZADO Y BÚSQUEDA ---
-		JLabel lblTitulo = new JLabel("Área de Ventas");
-		lblTitulo.setFont(new Font("Tw Cen MT", Font.BOLD | Font.ITALIC, 40));
-		lblTitulo.setBounds(220, 24, 263, 30);
-		contentPane.add(lblTitulo);
+		JPanel panelBusqueda = new JPanel();
+		panelBusqueda.setBorder(new TitledBorder(null, "Buscar Inmuebles en Venta", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panelBusqueda.setBounds(20, 20, 770, 65);
+		contentPane.add(panelBusqueda);
+		panelBusqueda.setLayout(null);
 
+<<<<<<< HEAD
 		JLabel lblBusqueda = new JLabel("Búsqueda por:");
 		lblBusqueda.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lblBusqueda.setBounds(283, 82, 88, 20);
@@ -132,10 +125,13 @@ public class Venta extends JFrame {
         });
 		scrollPane.setViewportView(T_info);
 		
+=======
+>>>>>>> 72672565077a379555435bd0cd542d62b2d4eb0a
 		txtBusqueda = new JTextField();
-		txtBusqueda.setBounds(20, 83, 241, 20);
-		contentPane.add(txtBusqueda);
+		txtBusqueda.setBounds(15, 25, 280, 23);
+		panelBusqueda.add(txtBusqueda);
 		txtBusqueda.setColumns(10);
+<<<<<<< HEAD
 		
 		JButton btnLimpiar = new JButton("Limpiar");
 		btnLimpiar.addActionListener(new ActionListener() {
@@ -148,84 +144,132 @@ public class Venta extends JFrame {
 		contentPane.add(btnLimpiar);
         
         cargarTodasPropiedades();
-	}
-	
-	private void realizarBusqueda() {
-        String tipo = (String) cmbBusqueda.getSelectedItem();
-        String valor = txtBusqueda.getText().trim();
-        
-        if (valor.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Ingrese un valor para buscar");
-            return;
-        }
-        
-        try {
-            conexion.conectar();
-            String sql = "";
-            
-            switch (tipo) {
-                case "Presupuesto":
-                    double presupuesto = Double.parseDouble(valor);
-                    sql = "SELECT * FROM propiedades WHERE precio <= " + presupuesto + " AND estado = 'En Venta' ORDER BY precio ASC";
-                    break;
-                case "Dimensiones":
-                    int dimension = Integer.parseInt(valor);
-                    sql = "SELECT * FROM propiedades WHERE dimension <= " + dimension + " AND estado = 'En Venta' ORDER BY precio ASC";
-                    break;
-                case "Ubicación":
-                    sql = "SELECT * FROM propiedades WHERE ubicacion LIKE '%" + valor + "%' AND estado = 'En Venta' ORDER BY precio ASC";
-                    break;
-            }
-            
-            DefaultTableModel resultado = conexion.consulta(sql);
-            modeloTabla.setRowCount(0);
-            
-            for (int i = 0; i < resultado.getRowCount(); i++) {
-                modeloTabla.addRow(new Object[]{
-                    resultado.getValueAt(i, 1),
-                    resultado.getValueAt(i, 2),
-                    resultado.getValueAt(i, 3),
-                    resultado.getValueAt(i, 4),
-                    resultado.getValueAt(i, 5)
-                });
-                
-                T_info.setValueAt(resultado.getValueAt(i, 0), i, -1); // -1 significa que no se muestra
-            }
-            
-            if (resultado.getRowCount() == 0) {
-                JOptionPane.showMessageDialog(this, "No se encontraron propiedades");
-            }
-            conexion.cerrar();
-            
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Ingrese un número válido");
-        }
-    }
-	
-	private void cargarTodasPropiedades() {
-        conexion.conectar();
-        String sql = "SELECT * FROM propiedades WHERE estado = 'En Venta' ORDER BY precio ASC";
-        DefaultTableModel resultado = conexion.consulta(sql);
-        modeloTabla.setRowCount(0);
-        
-        propiedadesId = new String[resultado.getRowCount()];  // Crear el arreglo con el tamaño correcto
-        
-        int i;
-        
-        for (i = 0; i < resultado.getRowCount(); i++) {
-            modeloTabla.addRow(new Object[]{
-                resultado.getValueAt(i, 1),
-                resultado.getValueAt(i, 2),
-                resultado.getValueAt(i, 3),
-                resultado.getValueAt(i, 4),
-                resultado.getValueAt(i, 5)
-            });
-            
-            propiedadesId[i] = resultado.getValueAt(i, 0).toString();  // Guardar ID dentro del for
-    	}
-        conexion.cerrar();
-    }
+=======
 
+		cmbBusqueda = new JComboBox();
+		cmbBusqueda.setModel(new DefaultComboBoxModel(new String[] {"Ubicacion","Dimension", "Tipo" ,"Precio"}));
+		cmbBusqueda.setBounds(315, 25, 160, 23);
+		panelBusqueda.add(cmbBusqueda);
+
+		//BUSCAR
+		btnBuscar = new JButton("Buscar");
+		btnBuscar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String texto = txtBusqueda.getText().trim();
+				String criterio = cmbBusqueda.getSelectedItem().toString();
+				
+				//Filtramos por el criterio seleccionado pero obliga a que el estado siga siendo En venta
+				String sql = "SELECT * FROM propiedades WHERE " + criterio + " LIKE '%" + texto + "%' AND Estado='En Venta'";
+				
+				conexion.conectar();
+				DefaultTableModel modeloFiltrado = conexion.consulta(sql);
+				actualizarDisenoTabla(modeloFiltrado);
+				conexion.cerrar();
+			}
+		});
+		btnBuscar.setBounds(500, 24, 110, 25);
+		panelBusqueda.add(btnBuscar);
+
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(20, 100, 610, 320);
+		contentPane.add(scrollPane);
+
+		tabla = new JTable();
+		scrollPane.setViewportView(tabla);
+		cargarDatos();
+
+		JPanel panelAcciones = new JPanel();
+		panelAcciones.setBorder(new TitledBorder(null, "Operaciones", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panelAcciones.setBounds(650, 100, 140, 250);
+		contentPane.add(panelAcciones);
+		panelAcciones.setLayout(null);
+
+		//GENERAR RECIBO
+		btnRecibo = new JButton("Vender");
+		btnRecibo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int filaSeleccionada = tabla.getSelectedRow();
+				
+				if (filaSeleccionada >= 0) {
+					//Extraemos los datos de la fila seleccionada
+					String idPropiedad = tabla.getModel().getValueAt(filaSeleccionada, 0).toString();
+					String dimension = tabla.getModel().getValueAt(filaSeleccionada, 1).toString();
+					String precio = tabla.getModel().getValueAt(filaSeleccionada, 2).toString();
+					String ubicacion = tabla.getModel().getValueAt(filaSeleccionada, 3).toString();
+					String tipo = tabla.getModel().getValueAt(filaSeleccionada, 5).toString();
+
+					//Ejecutamos el Jdialog SeleccionarClienteVenta
+					SeleccionarClienteVenta ventanaSeleccion = new SeleccionarClienteVenta();
+					ventanaSeleccion.setModal(true); //Hace que el Jframe se congele para esperar los datos
+					ventanaSeleccion.setVisible(true);
+
+					//Si el usuario confirmó la venta en el Dialog, procedemos a guardar en la BD
+					if (ventanaSeleccion.guardadoCorrecto()) {
+						//Jalamos los datos usando los métodos get del JDialog
+						String idCliente = ventanaSeleccion.getIdComprador();
+						String clienteNombre = ventanaSeleccion.getNombreComprador();
+						String clienteTelefono = ventanaSeleccion.getTelefonoComprador();
+						String fecha = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new java.util.Date());
+
+						//Cambiamos el estado de la propiedad a Vendido en la BD y guardamos la venta
+						String sentenciaEstado = "UPDATE propiedades SET Estado='Vendido' WHERE id=" + idPropiedad;
+						String sentenciaVenta = "INSERT INTO venta (precio_final, id_usuario, id_propiedad, id_cliente, fecha) " + "VALUES (" + precio + "," + idUsuario + ", " + idPropiedad + ", " + idCliente + ", Now())";
+						conexion.conectar();
+						conexion.ejecutarSentencia(sentenciaEstado);
+						conexion.ejecutarSentencia(sentenciaVenta);
+						conexion.cerrar();
+
+						//Generamos el Ticket						
+						String ticket = "╔════════════════════════════════════════════════╗\n";
+						ticket += "║            TICKET DE VENTA INMOBILIARIA        ║\n";
+						ticket += "╠════════════════════════════════════════════════╣\n";
+						ticket += "║  Fecha: " + fecha + "\n";
+						ticket += "║\n";
+						ticket += "║  CLIENTE COMPRADOR:\n";
+						ticket += "║  " + clienteNombre.toUpperCase() + "\n";
+						ticket += "║  Tel: " + clienteTelefono + "\n";
+						ticket += "║\n";
+						ticket += "║  DETALLES DEL INMUEBLE:\n";
+						ticket += "║  Inmueble:  " + tipo + " (" + dimension + " m²)\n";
+						ticket += "║  Ubicación: " + ubicacion + "\n";
+						ticket += "║  Precio total: $" + precio + "\n";
+						ticket += "║\n";
+						ticket += "╠════════════════════════════════════════════════╣\n";
+						ticket += "║         ¡PROPIEDAD ADQUIRIDA CON ÉXITO!        ║\n";
+						ticket += "╚════════════════════════════════════════════════╝";
+						
+						JTextArea textArea = new JTextArea(ticket);
+						textArea.setEditable(false);
+						textArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
+						
+						JOptionPane.showMessageDialog(null, new JScrollPane(textArea), "Comprobante de Operación", JOptionPane.INFORMATION_MESSAGE);
+						
+						//Recargar los datos en la tabla
+						cargarDatos();
+					}
+					
+				} else {
+					JOptionPane.showMessageDialog(null, "Por favor, seleccione de la lista la propiedad que desea vender.", "Atención", JOptionPane.WARNING_MESSAGE);
+				}
+			}
+		});
+		btnRecibo.setBounds(10, 30, 120, 45);
+		panelAcciones.add(btnRecibo);
+
+		btnRegresar = new JButton("Regresar");
+		btnRegresar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				menu ventanaMenu = new menu();
+				ventanaMenu.setVisible(true);
+				dispose();
+			}
+		});
+		btnRegresar.setBounds(660, 395, 120, 25);
+		contentPane.add(btnRegresar);
+>>>>>>> 72672565077a379555435bd0cd542d62b2d4eb0a
+	}
+
+<<<<<<< HEAD
 	private String[] propiedadesId;
 	
 	private void actualizarTablaYIds(DefaultTableModel resultado) {
@@ -457,4 +501,52 @@ public class Venta extends JFrame {
             JOptionPane.showMessageDialog(this, new JScrollPane(textArea), "Ticket de Venta", JOptionPane.INFORMATION_MESSAGE);
         }
     }
+=======
+	public void cargarDatos() {
+		conexion.conectar();
+		DefaultTableModel modeloOriginal = conexion.consulta("SELECT * FROM propiedades WHERE Estado='En Venta'");
+		actualizarDisenoTabla(modeloOriginal);
+		conexion.cerrar();
+	}
+
+
+	private void actualizarDisenoTabla(DefaultTableModel nuevoModelo) {
+		DefaultTableModel modeloNoEditable = new DefaultTableModel() {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false; 
+			}
+		};
+
+		//Copiar las columnas de la consulta
+		for (int i = 0; i < nuevoModelo.getColumnCount(); i++) {
+			modeloNoEditable.addColumn(nuevoModelo.getColumnName(i));
+		}
+		
+		//Copiar las filas de la consulta
+		for (int i = 0; i < nuevoModelo.getRowCount(); i++) {
+			Object[] fila = new Object[nuevoModelo.getColumnCount()];
+			for (int j = 0; j < nuevoModelo.getColumnCount(); j++) {
+				fila[j] = nuevoModelo.getValueAt(i, j);
+			}
+			modeloNoEditable.addRow(fila);
+		}
+
+		tabla.setModel(modeloNoEditable);
+
+		//Configuración básica
+		tabla.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		tabla.setRowSelectionAllowed(true);
+		tabla.setFillsViewportHeight(true);
+
+		//Ocultar el ID
+		if (tabla.getColumnCount() > 0) {
+			tabla.getColumnModel().getColumn(0).setMaxWidth(0);
+			tabla.getColumnModel().getColumn(0).setMinWidth(0);
+			tabla.getColumnModel().getColumn(0).setPreferredWidth(0);
+			tabla.getColumnModel().getColumn(0).setResizable(false);
+		}
+	}
+>>>>>>> 72672565077a379555435bd0cd542d62b2d4eb0a
 }

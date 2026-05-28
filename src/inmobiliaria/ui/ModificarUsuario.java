@@ -6,8 +6,10 @@ import java.awt.FlowLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import java.awt.Font;
@@ -20,11 +22,11 @@ public class ModificarUsuario extends JDialog {
 	private String correoModificado;
 	private String passwordModificado;
 	private String rolModificado;
-	private Boolean guardarModificacion;
+	private boolean guardarModificacion = false;
 
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
-	private JTextField txtContrasenaModificar;
+	private JPasswordField txtContrasenaModificar;
 	private JTextField txtCorreoModificar;
 	private JTextField txtNombreModificar;
 	private JComboBox<String> cmbRolModificar;
@@ -53,88 +55,92 @@ public class ModificarUsuario extends JDialog {
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
-		{
-			JLabel lblRolModificar = new JLabel("Rol:");
-			lblRolModificar.setBounds(21, 118, 44, 12);
-			contentPanel.add(lblRolModificar);
-		}
-		{
-			JComboBox<String> cmbRolModificar = new JComboBox<>();
-			cmbRolModificar.setModel(new DefaultComboBoxModel<String>(new String[] {"Administrador", "Vendedor"}));
-			cmbRolModificar.setBounds(49, 114, 124, 20);
-			contentPanel.add(cmbRolModificar);
-		}
-		{
-			txtContrasenaModificar = new JTextField();
-			txtContrasenaModificar.setColumns(10);
-			txtContrasenaModificar.setBounds(104, 89, 216, 18);
-			contentPanel.add(txtContrasenaModificar);
-		}
-		{
-			JLabel lblContrasenaModificar = new JLabel("Contraseña: ");
-			lblContrasenaModificar.setBounds(21, 92, 75, 12);
-			contentPanel.add(lblContrasenaModificar);
-		}
-		{
-			JLabel lblCorreoModificar = new JLabel("Correo:");
-			lblCorreoModificar.setBounds(21, 67, 61, 12);
-			contentPanel.add(lblCorreoModificar);
-		}
-		{
-			txtCorreoModificar = new JTextField();
-			txtCorreoModificar.setColumns(10);
-			txtCorreoModificar.setBounds(79, 64, 241, 18);
-			contentPanel.add(txtCorreoModificar);
-		}
-		{
-			txtNombreModificar = new JTextField();
-			txtNombreModificar.setColumns(10);
-			txtNombreModificar.setBounds(79, 39, 241, 18);
-			contentPanel.add(txtNombreModificar);
-		}
-		{
-			JLabel lblnombreModificar = new JLabel("Nombre: ");
-			lblnombreModificar.setBounds(21, 42, 61, 12);
-			contentPanel.add(lblnombreModificar);
-		}
-		{
-			JLabel lblModificarUsuario = new JLabel("MODIFICAR USUARIO");
-			lblModificarUsuario.setFont(new Font("Tahoma", Font.PLAIN, 15));
-			lblModificarUsuario.setBounds(10, 10, 149, 19);
-			contentPanel.add(lblModificarUsuario);
-		}
 		
-		txtNombreModificar.setText(catalogoUsuarios.nombreModificar());
-		txtCorreoModificar.setText(catalogoUsuarios.correoModificar());
-		txtContrasenaModificar.setText(catalogoUsuarios.passwordModificar());
-		cmbRolModificar.setSelectedItem(catalogoUsuarios.rolModificar());
+		JLabel lblRolModificar = new JLabel("Rol:");
+		lblRolModificar.setBounds(21, 118, 44, 12);
+		contentPanel.add(lblRolModificar);
+		
+		cmbRolModificar = new JComboBox<String>();
+		cmbRolModificar.setModel(new DefaultComboBoxModel<String>(new String[] {"Administrador", "Vendedor"}));
+		cmbRolModificar.setBounds(49, 114, 124, 20);
+		contentPanel.add(cmbRolModificar);
+		
+		txtContrasenaModificar = new JPasswordField();
+		txtContrasenaModificar.setColumns(10);
+		txtContrasenaModificar.setBounds(104, 89, 216, 18);
+		contentPanel.add(txtContrasenaModificar);
+		
+		JLabel lblContrasenaModificar = new JLabel("Contraseña: ");
+		lblContrasenaModificar.setBounds(21, 92, 75, 12);
+		contentPanel.add(lblContrasenaModificar);
+
+		JLabel lblCorreoModificar = new JLabel("Correo:");
+		lblCorreoModificar.setBounds(21, 67, 61, 12);
+		contentPanel.add(lblCorreoModificar);
+
+		txtCorreoModificar = new JTextField();
+		txtCorreoModificar.setColumns(10);
+		txtCorreoModificar.setBounds(79, 64, 241, 18);
+		contentPanel.add(txtCorreoModificar);
+
+		txtNombreModificar = new JTextField();
+		txtNombreModificar.setColumns(10);
+		txtNombreModificar.setBounds(79, 39, 241, 18);
+		contentPanel.add(txtNombreModificar);
+
+		JLabel lblnombreModificar = new JLabel("Nombre: ");
+		lblnombreModificar.setBounds(21, 42, 61, 12);
+
+		JLabel lblModificarUsuario = new JLabel("MODIFICAR USUARIO");
+		lblModificarUsuario.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblModificarUsuario.setBounds(10, 10, 149, 19);
+		contentPanel.add(lblModificarUsuario);
+		
+		txtNombreModificar.setText(CatalogoUsuarios.getNombreModificar());
+		txtCorreoModificar.setText(CatalogoUsuarios.getCorreoModificar());
+		txtContrasenaModificar.setText(CatalogoUsuarios.getPasswordModificar());
+		cmbRolModificar.setSelectedItem(CatalogoUsuarios.getRolModificar());
 
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton okButton = new JButton("OK");
-				okButton.addActionListener(new ActionListener() {
+				JButton btnOK = new JButton("OK");
+				btnOK.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						nombreModificado = txtNombreModificar.getText();
-						correoModificado = txtCorreoModificar.getText();
-						passwordModificado = txtContrasenaModificar.getText();
-						nombreModificado = cmbRolModificar.getSelectedItem().toString();//SIEMPRE PARSEA A STRING VALOR DE COMBOBOX!!!!!!!!!!!
-						
+						nombreModificado = txtNombreModificar.getText().trim();
+						correoModificado = txtCorreoModificar.getText().trim();
+						passwordModificado = new String(txtContrasenaModificar.getPassword()).trim();
+						rolModificado = cmbRolModificar.getSelectedItem().toString().trim();
+
+						if(nombreModificado.isEmpty() || correoModificado.isEmpty() || passwordModificado.isEmpty()) {
+						    JOptionPane.showMessageDialog(null, "Asegúrese de ingresar todos los datos solicitados.", "Error", JOptionPane.ERROR_MESSAGE);
+						    return;
+						}
+
+						if(!nombreModificado.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+") || !correoModificado.contains("@")) {
+						    JOptionPane.showMessageDialog(null, "Asegúrese de ingresar datos correctos.", "Error", JOptionPane.ERROR_MESSAGE);
+						    return;
+						}
+
 						guardarModificacion = true;
 						dispose();
-						
 					}
 				});
-				okButton.setActionCommand("OK");
-				buttonPane.add(okButton);
-				getRootPane().setDefaultButton(okButton);
+				btnOK.setActionCommand("OK");
+				buttonPane.add(btnOK);
+				getRootPane().setDefaultButton(btnOK);
 			}
 			{
-				JButton cancelButton = new JButton("Cancel");
-				cancelButton.setActionCommand("Cancel");
-				buttonPane.add(cancelButton);
+				JButton btnCancelar = new JButton("Cancelar");
+				btnCancelar.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						dispose();
+					}
+				});
+				btnCancelar.setActionCommand("Cancel");
+				buttonPane.add(btnCancelar);
 			}
 		}
 	}

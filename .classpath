@@ -11,5 +11,8 @@
 	<classpathentry kind="lib" path="Driver/hsqldb-2.5.0.jar"/>
 	<classpathentry kind="lib" path="Driver/jackcess-3.0.1.jar"/>
 	<classpathentry kind="lib" path="Driver/ucanaccess-5.0.1.jar"/>
+	<classpathentry kind="lib" path="src/lib/com.jgoodies.common_1.8.1.v20240327-0800.jar"/>
+	<classpathentry kind="lib" path="src/lib/com.jgoodies.forms_1.9.0.v20240327-0800.jar"/>
+	<classpathentry kind="lib" path="src/lib/jcalendar-1.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

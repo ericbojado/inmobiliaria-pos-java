@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -29,7 +30,7 @@ public class AgregarUsuario extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtNombreAgregar;
 	private JTextField txtCorreoAgregar;
-	private JTextField txtContrasenaAgregar;
+	private JPasswordField txtContrasenaAgregar;
 
 	/**
 	 * Launch the application.
@@ -83,7 +84,7 @@ public class AgregarUsuario extends JDialog {
 		lblContrasenaAgregar.setBounds(21, 92, 75, 12);
 		contentPanel.add(lblContrasenaAgregar);
 		
-		txtContrasenaAgregar = new JTextField();
+		txtContrasenaAgregar = new JPasswordField();
 		txtContrasenaAgregar.setColumns(10);
 		txtContrasenaAgregar.setBounds(104, 89, 216, 18);
 		contentPanel.add(txtContrasenaAgregar);
@@ -107,7 +108,7 @@ public class AgregarUsuario extends JDialog {
 						
 						nombre = txtNombreAgregar.getText().trim();//trim corta espacios en blanco para futuras validaciones
 						correo = txtCorreoAgregar.getText().trim();
-						password = txtContrasenaAgregar.getText().trim();
+						password = new String(txtContrasenaAgregar.getPassword()).trim();
 						rol = cmbRolAgregar.getSelectedItem().toString().trim();
 						
 						if(nombre.isEmpty() || correo.isEmpty() || password.isEmpty()) {//Si alguno de los campos esta vacio...

@@ -13,7 +13,7 @@ public class ConexionDB {
     private String url = "jdbc:ucanaccess://" + rutaDB;
     private Connection conexion = null;
 
-    //Abrir la conexión
+    //Abre la conexión
     public Connection conectar() {
         try {
         	//Driver a utilizar
@@ -29,7 +29,7 @@ public class ConexionDB {
         return conexion;
     }
 
-    //Enviar sentencias
+    //Envia sentencias
     public void ejecutarSentencia(String sql) {
         try {
         	
@@ -43,7 +43,7 @@ public class ConexionDB {
         }
     }
 
-    //Recuperar información (SELECT)
+    //Recupera información (SELECT)
     public DefaultTableModel consulta(String sql) {
         DefaultTableModel modelo = new DefaultTableModel();
         try {
@@ -51,13 +51,13 @@ public class ConexionDB {
             ResultSet rs = sentencia.executeQuery(sql);
             ResultSetMetaData metaData = rs.getMetaData();
 
-            //Crear las columnas automáticamente según la consulta
+            //Crea columnas automáticamente según la consulta
             int cantidadColumnas = metaData.getColumnCount();
             for (int i = 1; i <= cantidadColumnas; i++) {
                 modelo.addColumn(metaData.getColumnLabel(i));
             }
 
-            //Llenar las filas
+            //Llena las filas
             while (rs.next()) {
                 Object[] fila = new Object[cantidadColumnas];
                 for (int i = 0; i < cantidadColumnas; i++) {

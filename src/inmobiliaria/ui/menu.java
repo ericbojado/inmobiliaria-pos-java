@@ -8,6 +8,9 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JLabel;
+import java.awt.Font;
+import javax.swing.SwingConstants;
 
 public class menu extends JFrame {
 
@@ -46,31 +49,31 @@ public class menu extends JFrame {
 		JButton btnInventario = new JButton("Inventario");
 		btnInventario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				inventario Ventana = new inventario();
+				Inventario Ventana = new Inventario();
 		        
 		        Ventana.setVisible(true);
 		        dispose();
 			}
 		});
-		btnInventario.setBounds(323, 65, 144, 21);
+		btnInventario.setBounds(323, 95, 144, 21);
 		contentPane.add(btnInventario);
 		
 		JButton btnUsuarios = new JButton("Usuarios");
 		btnUsuarios.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				catalogoUsuarios Ventana = new catalogoUsuarios();
+				CatalogoUsuarios Ventana = new CatalogoUsuarios();
 		        
 		        Ventana.setVisible(true);
 		        dispose();
 			}
 		});
-		btnUsuarios.setBounds(323, 96, 144, 21);
+		btnUsuarios.setBounds(323, 195, 144, 21);
 		contentPane.add(btnUsuarios);
 		
 		JButton btnClientes = new JButton("Clientes");
 		btnClientes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Catalogo_Cliente Ventana = new Catalogo_Cliente();
+				CatalogoCliente Ventana = new CatalogoCliente();
 		        
 		        Ventana.setVisible(true);
 		        dispose();
@@ -88,7 +91,7 @@ public class menu extends JFrame {
 		        dispose();
 			}
 		});
-		btnVenta.setBounds(323, 162, 144, 21);
+		btnVenta.setBounds(323, 63, 144, 21);
 		contentPane.add(btnVenta);
 		
 		JButton btnHistorialVentas = new JButton("Historial de Ventas");
@@ -100,8 +103,33 @@ public class menu extends JFrame {
 		        dispose();*/
 			}
 		});
-		btnHistorialVentas.setBounds(323, 193, 144, 21);
+		btnHistorialVentas.setBounds(323, 160, 144, 21);
 		contentPane.add(btnHistorialVentas);
+		
+		JButton btnCerrarSesion = new JButton("Cerrar Sesión");
+		btnCerrarSesion.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//Limpiamos la variable  del rol
+		        Login.RolUsuario = null;
+		        
+		        Login ventanaLogin = new Login();
+		        ventanaLogin.setVisible(true);
+		        
+		        dispose();
+			}
+		});
+		btnCerrarSesion.setBounds(23, 268, 144, 23);
+		contentPane.add(btnCerrarSesion);
+		
+		JLabel lblNewLabel = new JLabel("INMOBILIARIA");
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblNewLabel.setBounds(32, 32, 118, 14);
+		contentPane.add(lblNewLabel);
 
+		//Control de permisos dependiendo del Rol
+		if (Login.RolUsuario.equals("Vendedor")) {
+			btnUsuarios.setVisible(false);
+		}
 	}
 }
